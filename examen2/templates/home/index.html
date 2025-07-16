@@ -1,0 +1,33 @@
+{% extends "base/base.html" %}
+
+{% block title %} INDEX VIEW {% endblock title %}
+
+{% block content %}
+    <button type="submit" class="btn btn-success">Create a New User</button>
+    <table class="table table-striped">
+        <thead>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th></th>
+            <th>ACTIONS</th>
+            <th></th>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.email }}</td>
+                <td><a class="btn btn-outline-info" href="">Detail</a></td>
+                <td><a class="btn btn-outline-warning" href="">Update</a></td>
+                <td><a class="btn btn-outline-danger" href="">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+
+{% endblock content %}
