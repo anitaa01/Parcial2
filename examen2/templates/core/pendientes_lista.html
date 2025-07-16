@@ -3,34 +3,102 @@
 {% block title %}{{ titulo }}{% endblock %}
 
 {% block content %}
+<style>
+    .custom-title {
+        color: #d63384;
+        font-weight: bold;
+    }
+
+    .btn-secondary {
+        border-radius: 30px;
+        background-color: #e0e0e0;
+        border: none;
+        color: #333;
+    }
+
+    .btn-secondary:hover {
+        background-color: #d6d6d6;
+    }
+
+    .alert-info {
+        background-color: #fce4ec;
+        border-color: #f8bbd0;
+        color: #880e4f;
+        font-weight: 500;
+    }
+
+    .card {
+        border-radius: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        border: none;
+    }
+
+    .table thead {
+        background-color: #f8bbd0;
+        color: white;
+    }
+
+    .badge.bg-primary {
+        background-color: #ec407a !important;
+    }
+
+    .badge.bg-info {
+        background-color: #f48fb1 !important;
+    }
+
+    .badge.bg-success {
+        background-color: #66bb6a !important;
+    }
+
+    .badge.bg-warning {
+        background-color: #ffa726 !important;
+        color: black;
+    }
+
+    .btn-sm {
+        border-radius: 20px;
+        font-weight: 500;
+    }
+
+    .alert-warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border-radius: 12px;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #fce4ec;
+    }
+</style>
+
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-12">
             <!-- Encabezado -->
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1>{{ titulo }}</h1>
+                <h1 class="custom-title">{{ titulo }}</h1>
                 <a href="{% url 'index' %}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i> Volver al Menú
                 </a>
             </div>
-            
+
             <!-- Estadísticas -->
             <div class="row mb-4">
                 <div class="col-md-12">
                     <div class="alert alert-info">
-                        <i class="fas fa-info-circle"></i> 
+                        <i class="fas fa-info-circle"></i>
                         Se encontraron <strong>{{ pendientes.count }}</strong> pendientes
                     </div>
                 </div>
             </div>
-            
+
             <!-- Tabla de resultados -->
             <div class="card">
                 <div class="card-body">
                     {% if pendientes %}
                         <div class="table-responsive">
                             <table class="table table-striped table-hover">
-                                <thead class="table-dark">
+                                <thead>
                                     <tr>
                                         {% if vista == 'ids' %}
                                             <th>ID</th>
@@ -41,13 +109,16 @@
                                                 <th>Estado</th>
                                                 <th>Acciones</th>
                                             {% endif %}
-                                        {% elif vista == 'ids_users' or vista == 'resueltos_users' or vista == 'sin_resolver_users' %}
+                                        {% elif vista == 'ids_users' %}
                                             <th>ID</th>
                                             <th>User ID</th>
                                             <th>Usuario</th>
-                                            {% if vista == 'ids_users' %}
-                                                <th>Estado</th>
-                                            {% endif %}
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        {% elif vista == 'resueltos_users' or vista == 'sin_resolver_users' %}
+                                            <th>ID</th>
+                                            <th>User ID</th>
+                                            <th>Usuario</th>
                                         {% endif %}
                                     </tr>
                                 </thead>
@@ -69,29 +140,42 @@
                                                     </td>
                                                     <td>
                                                         <a href="{% url 'editar_pendiente' pendiente.id %}" class="btn btn-sm btn-outline-primary">
-                                                            <i class="fas fa-edit"></i>Editar
+                                                            <i class="fas fa-edit"></i> Editar
                                                         </a>
                                                         <a href="{% url 'marcar_resuelto' pendiente.id %}" class="btn btn-sm btn-outline-success">
-                                                            <i class="fas fa-check"></i>Cambiar Estado
+                                                            <i class="fas fa-check"></i> Estado
                                                         </a>
-                                                        <a href="{% url 'eliminar_pendiente' pendiente.id %}" class="btn btn-danger btn-sm">
+                                                        <a href="{% url 'eliminar_pendiente' pendiente.id %}" class="btn btn-sm btn-outline-danger">
                                                             <i class="fas fa-trash"></i> Eliminar
                                                         </a>
                                                     </td>
                                                 {% endif %}
-                                            {% elif vista == 'ids_users' or vista == 'resueltos_users' or vista == 'sin_resolver_users' %}
+                                            {% elif vista == 'ids_users' %}
                                                 <td><span class="badge bg-primary">{{ pendiente.id }}</span></td>
                                                 <td><span class="badge bg-info">{{ pendiente.user.id }}</span></td>
                                                 <td>{{ pendiente.user.username }}</td>
-                                                {% if vista == 'ids_users' %}
-                                                    <td>
-                                                        {% if pendiente.resuelto %}
-                                                            <span class="badge bg-success">Resuelto</span>
-                                                        {% else %}
-                                                            <span class="badge bg-warning">Pendiente</span>
-                                                        {% endif %}
-                                                    </td>
-                                                {% endif %}
+                                                <td>
+                                                    {% if pendiente.resuelto %}
+                                                        <span class="badge bg-success">Resuelto</span>
+                                                    {% else %}
+                                                        <span class="badge bg-warning">Pendiente</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <a href="{% url 'editar_pendiente' pendiente.id %}" class="btn btn-sm btn-outline-primary">
+                                                        <i class="fas fa-edit"></i> Editar
+                                                    </a>
+                                                    <a href="{% url 'marcar_resuelto' pendiente.id %}" class="btn btn-sm btn-outline-success">
+                                                        <i class="fas fa-check"></i> Estado
+                                                    </a>
+                                                    <a href="{% url 'eliminar_pendiente' pendiente.id %}" class="btn btn-sm btn-outline-danger">
+                                                        <i class="fas fa-trash"></i> Eliminar
+                                                    </a>
+                                                </td>
+                                            {% elif vista == 'resueltos_users' or vista == 'sin_resolver_users' %}
+                                                <td><span class="badge bg-primary">{{ pendiente.id }}</span></td>
+                                                <td><span class="badge bg-info">{{ pendiente.user.id }}</span></td>
+                                                <td>{{ pendiente.user.username }}</td>
                                             {% endif %}
                                         </tr>
                                     {% endfor %}
@@ -103,7 +187,7 @@
                             <i class="fas fa-exclamation-triangle"></i>
                             <h4>No hay pendientes disponibles</h4>
                             <p>No se encontraron pendientes que coincidan con los criterios de búsqueda.</p>
-                            <a href="{% url 'crear_pendiente' %}" class="btn btn-primary">
+                            <a href="{% url 'crear_pendiente' %}" class="btn btn-primary rounded-pill">
                                 <i class="fas fa-plus"></i> Crear Primer Pendiente
                             </a>
                         </div>

@@ -3,62 +3,138 @@
 {% block title %}Sistema de Pendientes{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-12">
-            <h1 class="text-center mb-5">Sistema de Gestión de Pendientes</h1>
-            
-            <!-- Botón para crear nuevo pendiente -->
-            <div class="text-center mb-4">
-                <a href="{% url 'crear_pendiente' %}" class="btn btn-success btn-lg">
-                    <i class="fas fa-plus"></i> Crear Nuevo Pendiente
-                </a>
-            </div>
-            
-            <!-- Navegación de vistas -->
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Vistas Disponibles</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <!-- Columna 1: Vistas por ID y Título -->
-                        <div class="col-md-6">
-                            <h5 class="mb-3">Vistas por ID y Título</h5>
-                            <div class="list-group">
-                                <a href="{% url 'pendientes_ids' %}" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-list"></i> Todos los Pendientes (Solo IDs)
-                                </a>
-                                <a href="{% url 'pendientes_ids_titles' %}" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-list-alt"></i> Todos los Pendientes (IDs y Títulos)
-                                </a>
-                                <a href="{% url 'pendientes_sin_resolver' %}" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-clock text-warning"></i> Pendientes Sin Resolver (ID y Título)
-                                </a>
-                                <a href="{% url 'pendientes_resueltos' %}" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-check-circle text-success"></i> Pendientes Resueltos (ID y Título)
-                                </a>
-                            </div>
-                        </div>
-                        
-                        <!-- Columna 2: Vistas por ID y Usuario -->
-                        <div class="col-md-6">
-                            <h5 class="mb-3">Vistas por ID y Usuario</h5>
-                            <div class="list-group">
-                                <a href="{% url 'pendientes_ids_users' %}" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-users"></i> Todos los Pendientes (IDs y User IDs)
-                                </a>
-                                <a href="{% url 'pendientes_resueltos_users' %}" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-user-check text-success"></i> Pendientes Resueltos (ID y User ID)
-                                </a>
-                                <a href="{% url 'pendientes_sin_resolver_users' %}" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-user-clock text-warning"></i> Pendientes Sin Resolver (ID y User ID)
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<style>
+    body {
+        background-color: #fdf2f8;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .main-title {
+        font-size: 2.2rem;
+        font-weight: bold;
+        color: #d63384;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .create-btn {
+        background-color: #f8bbd0;
+        border: none;
+        padding: 12px 24px;
+        font-size: 1rem;
+        border-radius: 30px;
+        color: white;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .create-btn:hover {
+        background-color: #f06292;
+    }
+
+    .cards-wrapper {
+        display: flex;
+        flex-direction: row;      
+        justify-content: center; 
+        gap: 40px;                
+        flex-wrap: nowrap;      
+        overflow-x: auto;         
+    }
+
+    .card-box {
+        background-color: white;
+        border-radius: 16px;
+        padding: 25px;
+        width: 450px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-box:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-title {
+        font-size: 1.3rem;
+        color: #ad1457;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #f8bbd0;
+        padding-bottom: 10px;
+        text-align: center;
+    }
+
+    .list-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 0;
+        text-decoration: none;
+        color: #444;
+        font-weight: 500;
+        transition: color 0.3s;
+    }
+
+    .list-link:hover {
+        color: #d81b60;
+    }
+
+    .list-link i {
+        color: #ec407a;
+    }
+
+    @media (max-width: 900px) {
+        .cards-wrapper {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-box {
+            width: 90%;
+        }
+    }
+</style>
+
+<div class="container py-5">
+    <h1 class="main-title"><i class="fas fa-heart"></i> Sistema de Gestión de Pendientes</h1>
+
+    <div class="text-center mb-4">
+        <a href="{% url 'crear_pendiente' %}" class="create-btn">
+            <i class="fas fa-plus-circle"></i> Crear Nuevo Pendiente
+        </a>
+    </div>
+
+    <div class="cards-wrapper">
+        <!-- Card 1: ID y Título -->
+        <div class="card-box">
+            <div class="card-title"><i class="fas fa-list"></i> Vistas por ID y Título</div>
+            <a href="{% url 'pendientes_ids' %}" class="list-link">
+                <i class="fas fa-angle-right"></i> Todos los Pendientes (Solo IDs)
+            </a>
+            <a href="{% url 'pendientes_ids_titles' %}" class="list-link">
+                <i class="fas fa-angle-right"></i> Todos los Pendientes (IDs y Títulos)
+            </a>
+            <a href="{% url 'pendientes_sin_resolver' %}" class="list-link">
+                <i class="fas fa-angle-right text-warning"></i> Pendientes Sin Resolver
+            </a>
+            <a href="{% url 'pendientes_resueltos' %}" class="list-link">
+                <i class="fas fa-angle-right text-success"></i> Pendientes Resueltos
+            </a>
+        </div>
+
+        <!-- Card 2: ID y Usuario -->
+        <div class="card-box">
+            <div class="card-title"><i class="fas fa-user-friends"></i> Vistas por ID y Usuario</div>
+            <a href="{% url 'pendientes_ids_users' %}" class="list-link">
+                <i class="fas fa-angle-right"></i> Todos los Pendientes (IDs y User IDs)
+            </a>
+            <a href="{% url 'pendientes_resueltos_users' %}" class="list-link">
+                <i class="fas fa-angle-right text-success"></i> Pendientes Resueltos
+            </a>
+            <a href="{% url 'pendientes_sin_resolver_users' %}" class="list-link">
+                <i class="fas fa-angle-right text-warning"></i> Pendientes Sin Resolver
+            </a>
         </div>
     </div>
 </div>

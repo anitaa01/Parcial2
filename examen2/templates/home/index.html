@@ -3,31 +3,41 @@
 {% block title %} INDEX VIEW {% endblock title %}
 
 {% block content %}
-    <button type="submit" class="btn btn-success">Create a New User</button>
-    <table class="table table-striped">
-        <thead>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th></th>
-            <th>ACTIONS</th>
-            <th></th>
-        </thead>
-        <tbody>
-            {% for user in users %}
-            <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.first_name }}</td>
-                <td>{{ user.last_name }}</td>
-                <td>{{ user.email }}</td>
-                <td><a class="btn btn-outline-info" href="">Detail</a></td>
-                <td><a class="btn btn-outline-warning" href="">Update</a></td>
-                <td><a class="btn btn-outline-danger" href="">Delete</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Usuarios</h1>
+        <button type="submit" class="btn btn-success">
+            <i class="fas fa-user-plus"></i> Crear Nuevo Usuario
+        </button>
+    </div>
 
+    <div class="card">
+        <div class="card-body table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Email</th>
+                        <th colspan="3" class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.first_name }}</td>
+                        <td>{{ user.last_name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td><a class="btn btn-outline-info btn-sm" href="#">Detalle</a></td>
+                        <td><a class="btn btn-outline-warning btn-sm" href="#">Editar</a></td>
+                        <td><a class="btn btn-outline-danger btn-sm" href="#">Eliminar</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock content %}
